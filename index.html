@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+	</head>
+	<body>
+		<div id="colorContainer" style="display: inline-block"></div>
+		<input type="color">
+		<script>
+		
+		// Color Wheel //
+		var chosenColor = [];
+		
+		/////////// Change Variables Below to Affect the Color Wheel //////////////
+		var colorWheelSize = 200;
+		var pickColors = ['purple', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'grey', 'lightblue', 'lightgreen'];
+		var colorWheelXPos = 0;
+		var colorWheelYPos = 0;
+		var highlightColor = '#8deaed';
+		var colorWheelStroke = 'black';
+		
+		var customFunction = function(){
+			//Insert Custom Function Here
+			alert(chosenColor);
+		}
+		/////////// End Change Variables /////////////////////////////////////////
+		
+		
+		// Create Angle Increment, Kinetic Stage and Layer
+		var angleIncrement = 360/(pickColors.length);
+		var colorStage = new Kinetic.Stage({
+			container: 'colorContainer',
+			width: colorWheelSize*4,
+			height: colorWheelSize*4
+		});
+		var colorLayer = new Kinetic.Layer();
+		
+		// Allow Color Picker
+		
+		
+		
+		// Build Color Wheel
+		function buildColorWheel(){
+			var wedges = colorLayer.getChildren();
+			
+			for(i = 0; i < pickColors.length; i++) {
+				var colorWedge = new Kinetic.Arc({
+				innerRadius: colorWheelSize/2,
+				outerRadius: colorWheelSize,
+				fill: pickColors[i],
+				stroke: colorWheelStroke,
+				strokeWidth: 5,
+				angle: angleIncrement,
+				rotationDeg: angleIncrement*i,
+				x: colorWheelXPos+(colorWheelSize*1.5),
+				y: colorWheelYPos+(colorWheelSize*1.5)
+			});
+			
+			colorWedge.on('click', function() {
+				chosenColor.splice(0, 1, this.fill());
+				wedges.stroke(colorWheelStroke);
+				this.stroke(highlightColor);
+				this.moveToTop();
+				colorLayer.draw();
+				customFunction();
+			})
+			
+			var whiteWedge = new Kinetic.Wedge({
+				radius: (colorWheelSize/2)-2,
+				angle: 180,
+				fill: 'white',
+				stroke: colorWheelStroke,
+				strokeWidth: 3,
+				rotation: 90,
+				x: colorWheelXPos+(colorWheelSize*1.5),
+				y: colorWheelYPos+(colorWheelSize*1.5),
+			});
+			
+			whiteWedge.on('click', function() {
+				chosenColor.splice(0, 1, this.fill());
+				wedges.stroke(colorWheelStroke);
+				this.stroke(highlightColor);
+				this.moveToTop();
+				colorLayer.draw();
+				customFunction();
+			})
+			
+			var blackWedge = new Kinetic.Wedge({
+				radius: (colorWheelSize/2)-2,
+				angle: 180,
+				fill: 'black',
+				stroke: colorWheelStroke,
+				strokeWidth: 3,
+				rotation: 270,
+				x: colorWheelXPos+(colorWheelSize*1.5),
+				y: colorWheelYPos+(colorWheelSize*1.5),
+			});
+			
+			blackWedge.on('click', function() {
+				chosenColor.splice(0, 1, this.fill());
+				wedges.stroke(colorWheelStroke);
+				this.stroke(highlightColor);
+				this.moveToTop();
+				colorLayer.draw();
+				customFunction();
+			})
+			colorLayer.add(colorWedge);
+			colorLayer.add(whiteWedge);
+			colorLayer.add(blackWedge);
+			}
+			colorStage.add(colorLayer);
+		};
+		
+		buildColorWheel();
+		
+		</script>
+	</body>
+</html>
